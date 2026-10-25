@@ -36,7 +36,11 @@ image = (
     .env({"NVIDIA_DRIVER_CAPABILITIES": "all", "DIST_DIR": "../dist", "DEBIAN_FRONTEND": "noninteractive"})
     .add_local_dir(ROOT / "render-server", "/app/render-server", copy=True)
     .add_local_dir(ROOT / "dist", "/app/dist", copy=True, ignore=["media", "media/**", "render-bundle.tgz"])
-    .run_commands("cd /app/render-server && npm install --omit=dev --no-audit --no-fund --loglevel=error")
+    # fins de ligne Unix (copie depuis Windows) puis dépendances du serveur
+    .run_commands(
+        "sed -i 's/\\r$//' /app/render-server/start.sh",
+        "cd /app/render-server && npm install --omit=dev --no-audit --no-fund --loglevel=error",
+    )
 )
 
 app = modal.App("transformateurs-3d-rendu", image=image)
