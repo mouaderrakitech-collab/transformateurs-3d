@@ -10,7 +10,6 @@ Liste à jour au 25/10/2026. Chaque point indique ce qui manque et la solution p
 | Accès GPU dans le conteneur (Vulkan/EGL NVIDIA pour Chromium) | **non vérifié** | test sur pod | `start.sh` configure les ICD ; le serveur essaie Vulkan puis EGL et signale tout rendu logiciel |
 | 1080p / 60 i/s distant | **non mesuré** | test sur pod | la télémétrie affiche les valeurs mesurées ; choisir le profil d’après elles |
 | TURN/TCP sur le port public RunPod | **non testé** | test sur pod | chaîne testée en local sans TURN ; secours WebSocket testé |
-| URL publique GitHub Pages | **non publiée** | autorisation de push et nom du dépôt | workflow prêt (`.github/workflows/deploy-pages.yml`) |
 | Wi-Fi, latence Internet réelle | **non mesurés** | session RunPod | mesures affichées dans l’interface (RTT, latence, débit) |
 | Coût réel d’une session | estimé à partir des prix API | session réelle | `status` affiche le coût horaire réel du pod |
 

@@ -126,7 +126,7 @@ Bascule automatique vers les images JPEG par WebSocket, puis toutes les commande
 
 Dépôt public : https://github.com/mouaderrakitech-collab/transformateurs-3d. Site : https://mouaderrakitech-collab.github.io/transformateurs-3d/
 
-| Test ( sur l'URL publique HTTPS, Chrome) | Résultat |
+| Test (`scripts/site-test.mjs` sur l'URL publique HTTPS, Chrome) | Résultat |
 |---|---|
 | Workflow GitHub Actions (construction, contrôle anti-fuite, publication) | ✅ |
 | Page d'accueil HTTPS | ✅ HTTP 200, HTTPS imposé |
@@ -135,7 +135,7 @@ Dépôt public : https://github.com/mouaderrakitech-collab/transformateurs-3d. S
 | 33 diapositives parcourues | ✅ |
 | Animation de refroidissement | ✅ |
 | Médias de secours (50 images, 10 vidéos) accessibles | ✅ |
-| Paquet du moteur distant  accessible | ✅ |
+| Paquet du moteur distant `render-bundle.tgz` accessible | ✅ |
 | Aucune ressource en erreur, aucune erreur JavaScript (PC) | ✅ après correction (recherche du lanceur USB limitée à 127.0.0.1) |
 | Mobile (profil Pixel 7, tactile) : rendu 3D, pas de défilement horizontal, boutons tactiles, sommaire et explications en tiroirs | ✅ |
 
