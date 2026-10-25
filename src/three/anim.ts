@@ -12,4 +12,6 @@ export const anim = {
   fanAngle: 0,
   /** Vrai lorsque le refroidissement est affiché et en lecture. */
   running: false,
+  /** Rendu à la demande : horodatage jusqu'auquel le rendu reste actif après un changement. */
+  wakeUntil: 0,
 }

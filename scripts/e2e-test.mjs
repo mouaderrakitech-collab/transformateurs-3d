@@ -21,7 +21,7 @@ const st = (fn, arg) => page.evaluate(fn, arg)
 const wait = (ms) => page.waitForTimeout(ms)
 
 await page.goto(URL, { waitUntil: 'networkidle' })
-await wait(4000)
+await page.waitForFunction(() => window.__tele?.getState().fps > 0, null, { timeout: 30000 }).catch(() => undefined)
 const tele = await st(() => window.__tele.getState())
 ok('Chargement et rendu WebGL', tele.fps > 0, `GPU: ${tele.gpu} — ${tele.fps} i/s — ${tele.calls} appels, ${tele.triangles} triangles`)
 await shot('00-accueil')

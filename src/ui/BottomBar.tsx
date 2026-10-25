@@ -91,7 +91,7 @@ function RenderChip() {
     >
       <span className={`h-2 w-2 shrink-0 rounded-full ${color}`} />
       <span className="truncate">
-        {on ? `GPU Cloud${status === 'streaming' || status === 'fallback' ? ` · ${fps || '–'} i/s` : ' · ' + status}` : `GPU local · ${local.fps} i/s`}
+        {on ? `GPU Cloud${status === 'streaming' || status === 'fallback' ? ` · ${fps || '–'} i/s` : ' · ' + status}` : `GPU local · ${local.idle ? 'au repos' : local.fps + ' i/s'}`}
         {soft && ' · logiciel'}
       </span>
     </div>

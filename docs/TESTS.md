@@ -140,3 +140,7 @@ Dépôt public : https://github.com/mouaderrakitech-collab/transformateurs-3d. S
 | Mobile (profil Pixel 7, tactile) : rendu 3D, pas de défilement horizontal, boutons tactiles, sommaire et explications en tiroirs | ✅ |
 
 Mobile testé par émulation Chrome (profil Pixel 7), pas sur un téléphone physique.
+
+## 8. Optimisation Intel HD 4600 (25/10/2026)
+
+Rendu à la demande (0 image au repos, mesuré) et profil Performance pour GPU intégrés : 16 → 27 à 39 i/s selon la scène (zone 3D 1920×1024, rotation continue). Détails dans [RAPPORT-BUDGET-0.md](RAPPORT-BUDGET-0.md).

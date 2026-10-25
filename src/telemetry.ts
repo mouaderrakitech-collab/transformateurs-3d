@@ -10,6 +10,8 @@ export interface Telemetry {
   triangles: number
   width: number
   height: number
+  /** Rendu à la demande : aucune image depuis plus d'1,5 s (scène immobile). */
+  idle: boolean
   set: (p: Partial<Telemetry>) => void
 }
 
@@ -22,6 +24,7 @@ export const useTelemetry = create<Telemetry>((set) => ({
   triangles: 0,
   width: 0,
   height: 0,
+  idle: false,
   set: (p) => set(p),
 }))
 

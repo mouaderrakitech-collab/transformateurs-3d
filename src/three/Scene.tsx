@@ -30,10 +30,12 @@ export const MODELS: Record<ModelId, ModelDef> = {
   sec: { view: DRY_VIEW, particle: 0.016, depth: 0.32, flows: dryFlows, render: (c) => <DryTransformer cooling={c} /> },
 }
 
-export const QUALITY: Record<Quality, { dpr: [number, number]; shadows: boolean; shadowMap: number; detail: number; density: number; env: number }> = {
-  performance: { dpr: [1, 1], shadows: false, shadowMap: 512, detail: 0.6, density: 0.6, env: 64 },
-  equilibre: { dpr: [1, 1.5], shadows: true, shadowMap: 1024, detail: 1, density: 1, env: 128 },
-  haute: { dpr: [1, 2], shadows: true, shadowMap: 2048, detail: 1.5, density: 1.3, env: 256 },
+// Performance : profil pour GPU intégrés (Intel HD/UHD) — sans ombres ni anticrénelage, résolution interne
+// réduite à 85 % (remise à l'échelle par le navigateur), géométries et particules allégées.
+export const QUALITY: Record<Quality, { dpr: [number, number]; shadows: boolean; shadowMap: number; detail: number; density: number; env: number; antialias: boolean }> = {
+  performance: { dpr: [0.85, 0.85], shadows: false, shadowMap: 512, detail: 0.5, density: 0.5, env: 32, antialias: false },
+  equilibre: { dpr: [1, 1.5], shadows: true, shadowMap: 1024, detail: 1, density: 1, env: 128, antialias: true },
+  haute: { dpr: [1, 2], shadows: true, shadowMap: 2048, detail: 1.5, density: 1.3, env: 256, antialias: true },
 }
 
 const VIEW_DIRS: Record<CameraView, [number, number, number]> = {
@@ -97,6 +99,17 @@ function Driver() {
     anim.t = 0
     anim.heat = 0
   }, [reset])
+  const invalidate = useThree((s) => s.invalidate)
+  // Rendu à la demande : toute modification de l'état réveille le rendu pendant un court instant
+  // (changements de matériaux, de visibilité, transitions), puis le GPU se repose.
+  useEffect(() => {
+    const wake = () => {
+      anim.wakeUntil = performance.now() + 1200
+      invalidate()
+    }
+    wake()
+    return useApp.subscribe(wake)
+  }, [invalidate])
   useFrame((_, dtRaw) => {
     const s = useApp.getState()
     const dt = Math.min(dtRaw, 0.05)
@@ -109,6 +122,13 @@ function Driver() {
     anim.heat = THREE.MathUtils.damp(anim.heat, targetH, 3, dt)
     for (const [m, k] of heatMaterials()) m.emissiveIntensity = anim.heat * k
     if (anim.running && usesFans(s.cooling)) anim.fanAngle += dt * s.speed * 14
+    // Image suivante seulement si quelque chose bouge encore
+    const busy =
+      anim.running ||
+      Math.abs(anim.explode - targetE) > 0.002 ||
+      Math.abs(anim.heat - targetH) > 0.002 ||
+      performance.now() < anim.wakeUntil
+    if (busy) invalidate()
   })
   return null
 }
@@ -117,7 +137,7 @@ function Driver() {
 function Probe() {
   const { gl } = useThree()
   const set = useTelemetry((s) => s.set)
-  const acc = useRef({ n: 0, t: 0 })
+  const acc = useRef({ n: 0, t: 0, last: 0, slow: 0 })
   useEffect(() => {
     const ctx = gl.getContext()
     const ext = ctx.getExtension('WEBGL_debug_renderer_info')
@@ -125,10 +145,16 @@ function Probe() {
     const vendor = ext ? ctx.getParameter(ext.UNMASKED_VENDOR_WEBGL) : ctx.getParameter(ctx.VENDOR)
     set({ gpu: String(gpu), vendor: String(vendor) })
   }, [gl, set])
+  // Cadence mesurée uniquement sur les images rendues en continu (rendu à la demande :
+  // les pauses ne doivent pas être comptées comme une lenteur).
   useFrame((_, dt) => {
     const a = acc.current
-    a.n++
-    a.t += dt
+    if (dt >= 0.25) a.slow = dt // image lente (chargement) : conservée à part
+    if (dt < 0.25) {
+      a.n++
+      a.t += dt
+    }
+    a.last = performance.now()
     if (a.t >= 1) {
       const size = gl.getDrawingBufferSize(new THREE.Vector2())
       set({
@@ -138,11 +164,32 @@ function Probe() {
         triangles: gl.info.render.triangles,
         width: size.x,
         height: size.y,
+        idle: false,
       })
       a.n = 0
       a.t = 0
     }
   })
+  useEffect(() => {
+    const id = setInterval(() => {
+      const a = acc.current
+      const idle = a.last > 0 && performance.now() - a.last > 1500
+      if (idle && a.n === 0 && a.slow > 0) {
+        a.n = 1
+        a.t = a.slow
+      }
+      if (idle && a.n > 0) {
+        // Fin d'une courte période d'activité : publier la mesure partielle (cadence, taille, charge)
+        const size = gl.getDrawingBufferSize(new THREE.Vector2())
+        set({ fps: Math.round(a.n / Math.max(a.t, 1e-3)), frameMs: +((a.t / a.n) * 1000).toFixed(1), calls: gl.info.render.calls, triangles: gl.info.render.triangles, width: size.x, height: size.y })
+        a.n = 0
+        a.t = 0
+        a.slow = 0
+      }
+      if (idle !== useTelemetry.getState().idle) set({ idle })
+    }, 500)
+    return () => clearInterval(id)
+  }, [gl, set])
   return null
 }
 
@@ -233,7 +280,7 @@ function Expose() {
   return null
 }
 
-export function Scene3D({ active, onCanvas, forceQuality, preserve }: { active: boolean; onCanvas?: (c: HTMLCanvasElement) => void; forceQuality?: Quality; preserve?: boolean }) {
+export function Scene3D({ active, onCanvas, forceQuality, preserve, continuous }: { active: boolean; onCanvas?: (c: HTMLCanvasElement) => void; forceQuality?: Quality; preserve?: boolean; continuous?: boolean }) {
   const userQuality = useApp((s) => s.quality)
   const quality = forceQuality ?? userQuality
   const cfg = QUALITY[quality]
@@ -244,8 +291,9 @@ export function Scene3D({ active, onCanvas, forceQuality, preserve }: { active: 
       key={quality}
       shadows={cfg.shadows ? 'soft' : false}
       dpr={cfg.dpr}
-      frameloop={active ? 'always' : 'never'}
-      gl={{ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: !!preserve }}
+      // local : rendu à la demande (GPU au repos sans mouvement) ; moteur distant : rendu continu pour le flux vidéo
+      frameloop={!active ? 'never' : continuous ? 'always' : 'demand'}
+      gl={{ antialias: cfg.antialias, powerPreference: 'high-performance', preserveDrawingBuffer: !!preserve }}
       events={(store) => ({ ...defaultEvents(store), filter: clipFilter })}
       camera={{ fov: 38, near: 0.05, far: 200, position: [8, 6, 9] }}
       onCreated={({ gl }) => {

@@ -43,7 +43,7 @@ if (url) {
   const page = await browser.newPage({ viewport: { width: 1600, height: 900 } })
   page.on('pageerror', (e) => errors.push('app: ' + e.message))
   await page.goto(url, { waitUntil: 'networkidle' })
-  await sleep(3500)
+  await page.waitForFunction(() => window.__tele?.getState().fps > 0, null, { timeout: 30000 }).catch(() => undefined)
   const t = await page.evaluate(() => window.__tele.getState())
   ok('Application servie et rendu 3D local actif', t.fps > 0, `${t.gpu} — ${t.fps} i/s`)
   const api = await page.evaluate(async () => (await fetch('./api/launcher')).json())

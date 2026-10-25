@@ -6,7 +6,7 @@ Liste à jour au 25/10/2026. Chaque point indique ce qui manque et la solution p
 
 | Élément | État | Ce qui manque | Solution |
 |---|---|---|---|
-| Rendu GPU Cloud gratuit (Modal) | **intégré, non testé** | compte Modal et authentification de la CLI (`npm run cloud:modal:setup`) | voir docs/CLOUD-GRATUIT.md |
+| Rendu GPU Cloud gratuit (Modal) | **bloqué par le compte** : moyen de paiement exigé pour les GPU (constaté le 25/10/2026) ; image construite avec succès | compte Modal et authentification de la CLI (`npm run cloud:modal:setup`) | voir docs/CLOUD-GRATUIT.md |
 | Rendu sur GPU RunPod réel | **non testé** | solde RunPod de 0 $ et autorisation de dépense | approvisionner (≈ 1 $ suffit pour un test d’une heure sur RTX A5000), puis `node cloud/runpod.mjs start` et `SRV=… P=… V=… node scripts/cloud-test.mjs` |
 | Accès GPU dans le conteneur (Vulkan/EGL NVIDIA pour Chromium) | **non vérifié** | test sur pod | `start.sh` configure les ICD ; le serveur essaie Vulkan puis EGL et signale tout rendu logiciel |
 | 1080p / 60 i/s distant | **non mesuré** | test sur pod | la télémétrie affiche les valeurs mesurées ; choisir le profil d’après elles |

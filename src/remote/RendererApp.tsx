@@ -12,7 +12,7 @@ export function RendererApp() {
   }, [])
   return (
     <div style={{ position: 'fixed', inset: 0, background: '#1a1f26' }}>
-      <Scene3D active forceQuality="haute" preserve onCanvas={(c) => { setRenderCanvas(c); (window as unknown as { __canvas: HTMLCanvasElement }).__canvas = c }} />
+      <Scene3D active continuous forceQuality="haute" preserve onCanvas={(c) => { setRenderCanvas(c); (window as unknown as { __canvas: HTMLCanvasElement }).__canvas = c }} />
     </div>
   )
 }

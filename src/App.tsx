@@ -43,7 +43,13 @@ export function App() {
   useEffect(() => {
     let low = 0
     const id = setInterval(() => {
-      const { fps } = useTelemetry.getState()
+      const { fps, idle, gpu } = useTelemetry.getState()
+      // GPU intégré (Intel HD/UHD/Iris, mobiles) ou rendu logiciel : profil Performance d'emblée
+      if (qualityAuto && useApp.getState().quality !== 'performance' && /intel|hd graphics|uhd|iris|mali|adreno|powervr|swiftshader|llvmpipe/i.test(gpu)) {
+        useApp.setState({ quality: 'performance' })
+        return
+      }
+      if (idle) return // scène immobile : rien à mesurer
       const s = useApp.getState()
       if (!qualityAuto || useCloud.getState().status !== 'off' || s.quality === 'performance' || fps === 0) return
       low = fps < 20 ? low + 1 : 0
