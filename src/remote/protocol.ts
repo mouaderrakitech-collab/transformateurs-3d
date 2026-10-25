@@ -53,6 +53,7 @@ export interface RemoteTelemetry {
   gpuMemMb?: number
   encUtil?: number // utilisation de l'encodeur matériel, %
   hostname?: string
+  provider?: string // fournisseur GPU Cloud : RunPod, Modal, local…
   podId?: string
   idleStopMin?: number
   sessionEndsAt?: number // horodatage (ms) d'arrêt automatique

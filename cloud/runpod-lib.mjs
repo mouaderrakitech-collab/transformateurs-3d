@@ -14,10 +14,10 @@ export const DEFAULTS = {
   // GPU avec encodeur vidéo matériel NVENC et pilotes graphiques ; ordre = priorité de location.
   gpuTypeIds: (process.env.RENDER_GPUS ?? 'NVIDIA RTX A5000,NVIDIA RTX A4500,NVIDIA RTX A4000,NVIDIA GeForce RTX 4090,NVIDIA RTX A6000,NVIDIA L4').split(','),
   cloudType: process.env.RENDER_CLOUD ?? 'SECURE', // IP publique stable (TCP pour TURN)
-  bundleUrl: process.env.RENDER_BUNDLE_URL ?? '',
+  bundleUrl: process.env.RENDER_BUNDLE_URL ?? 'https://mouaderrakitech-collab.github.io/transformateurs-3d/render-bundle.tgz',
   idleStopMin: +(process.env.IDLE_STOP_MIN ?? 15),
   maxSessionMin: +(process.env.MAX_SESSION_MIN ?? 150),
-  publicSite: process.env.PUBLIC_SITE_URL ?? '',
+  publicSite: process.env.PUBLIC_SITE_URL ?? 'https://mouaderrakitech-collab.github.io/transformateurs-3d/',
 }
 
 async function rest(key, method, path, body) {

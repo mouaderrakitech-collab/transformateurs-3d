@@ -86,12 +86,12 @@ function RenderChip() {
   return (
     <div
       className="hidden max-w-[17rem] items-center gap-2 rounded-md border border-line px-2 py-1 text-xs lg:flex"
-      title={on ? `Rendu distant : ${tgpu ?? '…'}` : `Rendu local : ${local.gpu}`}
+      title={on ? `Rendu GPU Cloud : ${tgpu ?? '…'}` : `Rendu local : ${local.gpu}`}
       data-testid="render-chip"
     >
       <span className={`h-2 w-2 shrink-0 rounded-full ${color}`} />
       <span className="truncate">
-        {on ? `GPU distant${status === 'streaming' || status === 'fallback' ? ` · ${fps || '–'} i/s` : ' · ' + status}` : `GPU local · ${local.fps} i/s`}
+        {on ? `GPU Cloud${status === 'streaming' || status === 'fallback' ? ` · ${fps || '–'} i/s` : ' · ' + status}` : `GPU local · ${local.fps} i/s`}
         {soft && ' · logiciel'}
       </span>
     </div>

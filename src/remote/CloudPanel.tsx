@@ -34,7 +34,7 @@ export function CloudPanel() {
         <span className={`h-2.5 w-2.5 rounded-full ${dot}`} />
         <div className="min-w-0 flex-1">
           <div className="text-[13px] font-medium">
-            {on ? (st.role === 'viewer' ? 'GPU distant — spectateur' : 'GPU distant — présentateur') : 'Rendu local (GPU de ce PC)'}
+            {on ? `GPU Cloud${st.telemetry?.provider ? ' (' + st.telemetry.provider + ')' : ''} — ${st.role === 'viewer' ? 'spectateur' : 'présentateur'}` : 'Rendu local (GPU de ce PC)'}
           </div>
           <div className="truncate text-xs text-ink-3" title={st.message}>
             {on ? st.message : local.gpu}
@@ -52,10 +52,18 @@ export function CloudPanel() {
         >
           <input
             className="w-full rounded border border-line bg-bg px-2 py-1.5 text-[13px]"
-            placeholder="Adresse du serveur (https://…proxy.runpod.net)"
+            placeholder="Lien de session ou adresse du serveur (https://…)"
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            aria-label="Adresse du serveur de rendu"
+            onChange={(e) => {
+              // Lien complet collé (…#cloud=<adresse>&token=<jeton>) : extraire l'adresse et le jeton
+              const v = e.target.value.trim()
+              const h = v.includes('#') ? new URLSearchParams(v.split('#')[1]) : null
+              if (h?.get('cloud') && h.get('token')) {
+                setUrl(h.get('cloud')!)
+                setToken(h.get('token')!)
+              } else setUrl(e.target.value)
+            }}
+            aria-label="Lien de session ou adresse du serveur de rendu"
           />
           <input
             className="w-full rounded border border-line bg-bg px-2 py-1.5 font-mono text-[13px]"
@@ -66,7 +74,7 @@ export function CloudPanel() {
             onChange={(e) => setToken(e.target.value)}
             aria-label="Jeton de session"
           />
-          <button className="btn btn-primary w-full" disabled={!url || !token}>Se connecter au GPU distant</button>
+          <button className="btn btn-primary w-full" disabled={!url || !token}>Se connecter au GPU Cloud</button>
           <p className="text-xs text-ink-3">
             Le jeton est fourni par l’opérateur lors du démarrage de la session (lien de session). Il expire avec la session.
           </p>
@@ -96,7 +104,7 @@ export function CloudPanel() {
   )
 }
 
-/** Mesures du flux et télémétrie du GPU distant (preuve que le rendu est calculé sur RunPod). */
+/** Mesures du flux et télémétrie du GPU distant (preuve que le rendu est calculé sur le GPU Cloud). */
 export function RemoteStats() {
   const st = useCloud()
   const t = st.telemetry
@@ -163,7 +171,7 @@ function LauncherStart() {
   }
   return (
     <div className="space-y-1.5 rounded border border-line p-2.5">
-      <div className="text-[12px] font-semibold">Lanceur USB — session RunPod</div>
+      <div className="text-[12px] font-semibold">Lanceur USB — démarrer une session GPU Cloud (RunPod, payant)</div>
       <input
         className="w-full rounded border border-line bg-bg px-2 py-1.5 font-mono text-[13px]"
         placeholder="Clé API RunPod (non enregistrée)"

@@ -151,7 +151,7 @@ class CloudClient {
       if (!r.ok) throw new Error('HTTP ' + r.status)
       health = await r.json()
     } catch {
-      return this.scheduleRetry('Serveur GPU injoignable (pod arrêté ou en démarrage)', 'unavailable')
+      return this.scheduleRetry('Serveur GPU Cloud injoignable (session arrêtée ou en démarrage)', 'unavailable')
     }
     set({ health })
     if (!health.rendererReady) return this.scheduleRetry('Serveur joignable, moteur de rendu en démarrage', 'unavailable')

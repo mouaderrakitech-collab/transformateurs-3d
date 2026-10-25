@@ -10,6 +10,17 @@ apt-get update -qq
 # coturn : relais TURN sur TCP (RunPod n'expose pas l'UDP). libvulkan1 / libegl1 : rendu GPU de Chromium.
 apt-get install -y -qq --no-install-recommends coturn libvulkan1 libegl1 libgl1 vulkan-tools >/dev/null || true
 
+# Bibliothèques graphiques NVIDIA (GL/EGL/Vulkan) : certains fournisseurs (Modal…) ne montent que les
+# bibliothèques de calcul. On installe le paquet correspondant à la version majeure du pilote de l'hôte.
+DRV=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader 2>/dev/null | head -1 | cut -d. -f1 || true)
+if [ -n "$DRV" ] && ! ldconfig -p | grep -q libGLX_nvidia; then
+  echo "[start] pilote $DRV sans bibliothèques graphiques : installation de libnvidia-gl-$DRV"
+  apt-get install -y -qq --no-install-recommends "libnvidia-gl-$DRV" >/dev/null 2>&1 \
+    || apt-get install -y -qq --no-install-recommends "libnvidia-gl-$DRV-server" >/dev/null 2>&1 \
+    || echo "[start] libnvidia-gl-$DRV indisponible : risque de rendu logiciel (signalé dans la présentation)"
+  ldconfig || true
+fi
+
 # Fichiers ICD NVIDIA (Vulkan / EGL) s'ils ne sont pas fournis par le conteneur.
 NV_GLX=$(ldconfig -p | grep -m1 -o '/[^ ]*libGLX_nvidia.so.0' || true)
 NV_EGL=$(ldconfig -p | grep -m1 -o '/[^ ]*libEGL_nvidia.so.0' || true)

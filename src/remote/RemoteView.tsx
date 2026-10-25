@@ -112,7 +112,7 @@ export function RemoteView() {
       {(st.status === 'streaming' || st.status === 'fallback') && (
         <div className="pointer-events-none absolute left-3 top-16 z-10 rounded-lg border border-ok/50 bg-black/70 px-3 py-2 font-mono text-[12px] leading-relaxed text-ink" data-testid="remote-hud">
           <div className="flex items-center gap-2 font-sans text-[13px] font-semibold text-ok">
-            <span className="h-2 w-2 rounded-full bg-ok" /> GPU distant connecté
+            <span className="h-2 w-2 rounded-full bg-ok" /> GPU Cloud connecté{st.telemetry?.provider ? ` · ${st.telemetry.provider}` : ''}
           </div>
           <div>{st.telemetry?.gpu ? shortGpu(st.telemetry.gpu) : '…'}{st.telemetry?.gpuUtil !== undefined ? ` · ${st.telemetry.gpuUtil} %` : ''}</div>
           {st.telemetry?.gpu && !/nvidia/i.test(st.telemetry.gpu) && (
@@ -135,7 +135,7 @@ export function RemoteView() {
         <div className="absolute inset-0 flex items-center justify-center bg-bg/85">
           <div className="max-w-md rounded-lg border border-line bg-panel p-5 text-center">
             <div className="mb-2 text-lg font-semibold">
-              {st.status === 'denied' ? 'Accès refusé' : st.status === 'unavailable' ? 'Serveur GPU indisponible' : 'Connexion au GPU distant…'}
+              {st.status === 'denied' ? 'Accès refusé' : st.status === 'unavailable' ? 'Serveur GPU Cloud indisponible' : 'Connexion au GPU Cloud…'}
             </div>
             <p className="text-sm text-ink-2">{st.message}</p>
             <div className="mt-4 flex justify-center gap-2">

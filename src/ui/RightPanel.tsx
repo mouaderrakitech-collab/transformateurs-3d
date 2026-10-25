@@ -226,7 +226,7 @@ function Reglages() {
         <MediaToggle />
       </section>
       <section>
-        <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-ink-3">Rendu GPU distant (RunPod)</h4>
+        <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-ink-3">Rendu GPU Cloud</h4>
         <CloudPanel />
       </section>
       <section>

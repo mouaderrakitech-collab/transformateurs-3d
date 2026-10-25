@@ -10,6 +10,7 @@
 // Les liens de session (avec jetons temporaires) sont affichés à l'écran uniquement.
 
 import readline from 'node:readline'
+import { spawn } from 'node:child_process'
 import { DEFAULTS, estimate, listSessionPods, podInfo, proxyUrl, sessionLinks, startSession, stopAll, waitReady } from './runpod-lib.mjs'
 
 const cmd = process.argv[2] ?? 'status'
@@ -63,6 +64,12 @@ try {
     console.log('\nLien PRÉSENTATEUR (ne pas diffuser) :\n  ' + links.presenter)
     console.log('\nLien SPECTATEUR :\n  ' + links.viewer)
     console.log('\nArrêt : node cloud/runpod.mjs stop')
+    // Connexion automatique : ouverture du lien présentateur (GitHub Pages) dans le navigateur
+    if (!process.argv.includes('--no-open') && links.presenter.startsWith('http')) {
+      // guillemets explicites : le « & » du fragment (#cloud=…&token=…) ne doit pas être interprété par cmd
+      if (process.platform === 'win32') spawn('cmd', ['/c', 'start', '""', `"${links.presenter}"`], { detached: true, stdio: 'ignore', windowsVerbatimArguments: true }).unref()
+      else spawn('xdg-open', [links.presenter], { detached: true, stdio: 'ignore' }).unref()
+    }
   } else if (cmd === 'status') {
     const pods = await listSessionPods(key)
     if (!pods.length) console.log('Aucune session en cours (aucun coût de calcul).')

@@ -35,6 +35,8 @@ const START = Date.now()
 const SESSION_ENDS_AT = START + MAX_SESSION_MIN * 60_000
 const POD_ID = env.RUNPOD_POD_ID || ''
 const HEADLESS = env.HEADLESS !== '0'
+// Fournisseur affiché dans la présentation (aucune logique spécifique hormis l'arrêt du pod RunPod)
+const PROVIDER = env.CLOUD_PROVIDER || (POD_ID ? 'RunPod' : 'local')
 
 const PROFILES = {
   high: { width: 1920, height: 1080 },
@@ -278,7 +280,7 @@ async function pollGpu() {
   // Processus utilisant le GPU : preuve que le navigateur moteur rend sur le GPU
   const pm = await run('nvidia-smi', ['pmon', '-c', '1'])
   if (pm) host.chromeOnGpu = /chrom|headless_shell/i.test(pm)
-  toRenderer({ type: 'host', d: { gpuUtil: host.gpuUtil, gpuMemMb: host.gpuMemMb, encUtil: host.encUtil, hostname: os.hostname(), podId: POD_ID || undefined, idleStopMin: IDLE_STOP_MIN, sessionEndsAt: SESSION_ENDS_AT } })
+  toRenderer({ type: 'host', d: { gpuUtil: host.gpuUtil, gpuMemMb: host.gpuMemMb, encUtil: host.encUtil, hostname: os.hostname(), podId: POD_ID || undefined, provider: PROVIDER, idleStopMin: IDLE_STOP_MIN, sessionEndsAt: SESSION_ENDS_AT } })
 }
 
 // ───────────────────────────────────────────── Arrêt automatique (protection des coûts)

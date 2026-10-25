@@ -12,7 +12,8 @@ Diapositives, modèles 3D et démonstrations sont réunis dans une seule interfa
 | Clé USB / PC sans Node.js | `npm run build:portable -- --site <url-pages>` puis copier `portable/Transformateurs3D` et lancer `Lancer-Presentation.bat` |
 | Exécution bloquée sur le PC | ouvrir `app/autonome.html` de la version portable |
 | Lien public | https://mouaderrakitech-collab.github.io/transformateurs-3d/ (déploiement automatique à chaque push sur `main`) |
-| Session GPU RunPod | `node cloud/runpod.mjs estimate`, puis `start`, puis `stop` (voir [docs/RUNPOD.md](docs/RUNPOD.md)) |
+| Session GPU Cloud (Modal, crédits gratuits) | `npm run cloud:modal:setup` puis `npm run cloud:modal` (voir [docs/CLOUD-GRATUIT.md](docs/CLOUD-GRATUIT.md)) |
+| Session GPU RunPod (payant) | `node cloud/runpod.mjs estimate`, puis `start`, puis `stop` (voir [docs/RUNPOD.md](docs/RUNPOD.md)) |
 
 ## Contenu
 
@@ -27,6 +28,7 @@ Diapositives, modèles 3D et démonstrations sont réunis dans une seule interfa
 ## Documentation
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) : architecture, choix du rendu distant (Unreal Pixel Streaming étudié), réseau, sécurité
+- [docs/CLOUD-GRATUIT.md](docs/CLOUD-GRATUIT.md) : rendu GPU Cloud multi-fournisseurs, fournisseurs gratuits étudiés, procédure Modal
 - [docs/RUNPOD.md](docs/RUNPOD.md) : configuration, démarrage et arrêt d’une session, coûts
 - [docs/TESTS.md](docs/TESTS.md) : rapport de tests (résultats réellement exécutés)
 - [docs/LIMITES.md](docs/LIMITES.md) : limites et éléments non validés

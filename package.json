@@ -16,7 +16,9 @@
     "test:e2e": "node scripts/e2e-test.mjs",
     "test:cloud": "node scripts/cloud-test.mjs",
     "test:perf": "node scripts/perf.mjs",
-    "runpod": "node cloud/runpod.mjs"
+    "runpod": "node cloud/runpod.mjs",
+    "cloud:modal": "cloud\\.venv\\Scripts\\modal run cloud/modal_app.py",
+    "cloud:modal:setup": "python -m venv cloud/.venv && cloud\\.venv\\Scripts\\python -m pip install modal && cloud\\.venv\\Scripts\\modal token new"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
