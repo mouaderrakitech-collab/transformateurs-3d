@@ -1,0 +1,14 @@
+{
+  "name": "transformateurs-render-server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Serveur de rendu GPU distant (RunPod) : moteur 3D dans Chromium GPU + WebRTC",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.64.1",
+    "ws": "8.22.0"
+  }
+}

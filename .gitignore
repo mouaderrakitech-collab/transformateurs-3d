@@ -1,0 +1,14 @@
+node_modules/
+dist/
+dist-single/
+portable/
+test-results/
+*.log
+.env
+.env.*
+*.pem
+*.key
+.vscode/
+.DS_Store
+Thumbs.db
+tsconfig.tsbuildinfo

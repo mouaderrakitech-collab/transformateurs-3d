@@ -1,0 +1,44 @@
+{
+  "name": "transformateurs-3d",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Présentation Web 3D interactive : types de transformateurs électriques et systèmes de refroidissement",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p . && vite build && node scripts/bundle-render.mjs",
+    "build:single": "vite build --mode single",
+    "build:portable": "node scripts/build-portable.mjs",
+    "preview": "vite preview --port 4173 --strictPort",
+    "serve": "node launcher/launcher.mjs --dir dist --open",
+    "typecheck": "tsc --noEmit -p .",
+    "media": "node scripts/render-media.mjs",
+    "test:e2e": "node scripts/e2e-test.mjs",
+    "test:cloud": "node scripts/cloud-test.mjs",
+    "test:perf": "node scripts/perf.mjs",
+    "runpod": "node cloud/runpod.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "gsap": "^3.15.0",
+    "pdfjs-dist": "^6.4.299",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.186.1",
+    "ws": "^8.22.0",
+    "zustand": "^5.0.16"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "playwright-core": "^1.64.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vite-plugin-singlefile": "^2.3.4"
+  }
+}
