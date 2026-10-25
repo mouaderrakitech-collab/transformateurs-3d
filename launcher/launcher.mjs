@@ -64,7 +64,8 @@ async function launcherApi(req, res, action, port) {
   const origin = req.headers.origin
   if (origin && origin !== `http://127.0.0.1:${port}` && origin !== `http://localhost:${port}`) return json(res, 403, { error: 'Origine refusée' })
   if (!lib) return json(res, 404, { available: false })
-  if (req.method === 'GET') return json(res, 200, { available: true, session: session ? { serverUrl: session.serverUrl } : null })
+  // GET : même origine uniquement (pas d'en-tête CORS) — permet la connexion automatique au GPU distant
+  if (req.method === 'GET') return json(res, 200, { available: true, session: session ? { serverUrl: session.serverUrl, presenterToken: session.tokens.presenter } : null })
   let body
   try { body = await readBody(req) } catch { return json(res, 400, { error: 'Requête invalide' }) }
   const key = String(body.apiKey ?? '').trim()

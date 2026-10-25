@@ -18,7 +18,16 @@ export function App() {
   useEffect(() => {
     useApp.getState().goToSlide(0)
     if (!webglAvailable()) useMedia.getState().set(true, 'WebGL n’est pas disponible sur ce PC.')
-    if (!readSessionLink()) cloud.resume()
+    if (!readSessionLink()) {
+      cloud.resume()
+      // Lanceur USB : si une session GPU est active, s'y connecter automatiquement (rendu distant prioritaire)
+      fetch('./api/launcher', { cache: 'no-store' })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((j) => {
+          if (j?.session?.serverUrl && j.session.presenterToken && useCloud.getState().status === 'off') cloud.connect(j.session.serverUrl, j.session.presenterToken)
+        })
+        .catch(() => undefined)
+    }
   }, [])
 
   // Navigation clavier (télécommande de présentation : PageUp / PageDown)

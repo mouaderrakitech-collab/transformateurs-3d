@@ -12,7 +12,7 @@ export const POD_PREFIX = 'transformateurs-3d'
 export const DEFAULTS = {
   image: process.env.RENDER_IMAGE ?? 'mcr.microsoft.com/playwright:v1.64.1-noble',
   // GPU avec encodeur vidéo matériel NVENC et pilotes graphiques ; ordre = priorité de location.
-  gpuTypeIds: (process.env.RENDER_GPUS ?? 'NVIDIA RTX A5000,NVIDIA RTX A4500,NVIDIA RTX A4000,NVIDIA GeForce RTX 4090,NVIDIA L4').split(','),
+  gpuTypeIds: (process.env.RENDER_GPUS ?? 'NVIDIA RTX A5000,NVIDIA RTX A4500,NVIDIA RTX A4000,NVIDIA GeForce RTX 4090,NVIDIA RTX A6000,NVIDIA L4').split(','),
   cloudType: process.env.RENDER_CLOUD ?? 'SECURE', // IP publique stable (TCP pour TURN)
   bundleUrl: process.env.RENDER_BUNDLE_URL ?? '',
   idleStopMin: +(process.env.IDLE_STOP_MIN ?? 15),

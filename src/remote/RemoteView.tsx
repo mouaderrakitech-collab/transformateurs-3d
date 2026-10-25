@@ -6,6 +6,12 @@ import { PARTS } from '../data/catalog'
  * Affiche le flux vidéo rendu par le GPU distant et transmet les interactions
  * (rotation, zoom, déplacement, sélection) au moteur 3D distant.
  */
+/** « ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 …, Vulkan …) » → « NVIDIA GeForce RTX 4090 » */
+function shortGpu(s: string) {
+  const m = s.match(/NVIDIA[^,()]*?(RTX|GeForce|Quadro|Tesla|A\d|L\d)[^,()]*/i)
+  return (m ? m[0] : s).replace(/\s*\(0x[0-9a-f]+\)/i, '').trim().slice(0, 48)
+}
+
 export function RemoteView() {
   const video = useRef<HTMLVideoElement>(null)
   const box = useRef<HTMLDivElement>(null)
@@ -102,6 +108,24 @@ export function RemoteView() {
           {l.name}
         </div>
       ))}
+      {/* Indicateur permanent : qui calcule l'image, mesures réelles */}
+      {(st.status === 'streaming' || st.status === 'fallback') && (
+        <div className="pointer-events-none absolute left-3 top-16 z-10 rounded-lg border border-ok/50 bg-black/70 px-3 py-2 font-mono text-[12px] leading-relaxed text-ink" data-testid="remote-hud">
+          <div className="flex items-center gap-2 font-sans text-[13px] font-semibold text-ok">
+            <span className="h-2 w-2 rounded-full bg-ok" /> GPU distant connecté
+          </div>
+          <div>{st.telemetry?.gpu ? shortGpu(st.telemetry.gpu) : '…'}{st.telemetry?.gpuUtil !== undefined ? ` · ${st.telemetry.gpuUtil} %` : ''}</div>
+          {st.telemetry?.gpu && !/nvidia/i.test(st.telemetry.gpu) && (
+            <div className="font-sans text-warn">⚠ Le moteur distant n’utilise pas un GPU NVIDIA</div>
+          )}
+          <div>
+            Rendu {st.telemetry?.fps ?? '–'} i/s · Reçu {st.transport === 'jpeg' ? '≈10' : st.stats.fps || '–'} i/s
+          </div>
+          <div>
+            {st.transport === 'jpeg' ? '1280×720 (secours)' : st.stats.width ? `${st.stats.width}×${st.stats.height}` : '–'} · latence {st.stats.latencyMs || '–'} ms
+          </div>
+        </div>
+      )}
       {st.hovered && presenter && (
         <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded bg-black/70 px-2 py-1 text-xs text-ink">
           {PARTS[st.hovered]?.nom}
