@@ -109,7 +109,9 @@ function Ideal() {
       <T x="330" y="475" textAnchor="middle" fill={C.hot}>Pertes fer</T>
       <T x="630" y="475" textAnchor="middle" fill={C.hot}>Pertes Joule</T>
       <T x="480" y="515" textAnchor="middle" fontSize={17} fill={C.ink2}>Toutes les pertes deviennent de la chaleur dans l’appareil</T>
-      <T x="480" y="60" textAnchor="middle" fontSize={24}>U₁ / U₂ = N₁ / N₂     I₁ / I₂ = N₂ / N₁</T>
+      {/* deux éléments distincts : le SVG fusionne les espaces multiples */}
+      <T x="340" y="60" textAnchor="middle" fontSize={24}>U₁ / U₂ = N₁ / N₂</T>
+      <T x="620" y="60" textAnchor="middle" fontSize={24}>I₁ / I₂ = N₂ / N₁</T>
       <T x="480" y="92" textAnchor="middle" fontSize={16} fill={C.ink2}>(relations du transformateur idéal)</T>
     </Frame>
   )
@@ -142,10 +144,19 @@ function Classification() {
         </g>
       ))}
       {ex.map((e, k) => {
-        const pts = e.c.map((ci, j) => [cols[j].x, yItem(ci) + (k - 1.5) * 7])
+        // liaisons entre les bords des cases (le texte des cases n'est jamais barré)
+        const y = (j: number) => yItem(e.c[j]) + (k - 1.5) * 7
+        const pts = [
+          [cols[0].x + 120, y(0)],
+          [cols[1].x - 120, y(1)],
+          [cols[1].x + 120, y(1)],
+          [cols[2].x - 120, y(2)],
+        ]
         return (
           <g key={e.name}>
-            <polyline points={pts.map((p) => p.join(',')).join(' ')} fill="none" stroke={e.color} strokeWidth={3} opacity={0.85} />
+            {/* deux segments : col. 1 → col. 2, puis col. 2 → col. 3 (rien ne traverse les cases) */}
+            <line x1={pts[0][0]} y1={pts[0][1]} x2={pts[1][0]} y2={pts[1][1]} stroke={e.color} strokeWidth={3} opacity={0.85} />
+            <line x1={pts[2][0]} y1={pts[2][1]} x2={pts[3][0]} y2={pts[3][1]} stroke={e.color} strokeWidth={3} opacity={0.85} />
             {pts.map((p, j) => <circle key={j} cx={p[0]} cy={p[1]} r={5} fill={e.color} />)}
             <rect x={80 + k * 210} y={380} width={16} height={16} fill={e.color} rx={3} />
             <T x={104 + k * 210} y={394} fontSize={16}>{e.name}</T>
@@ -174,7 +185,7 @@ function Pertes() {
       <polyline points={pts(() => 0.22)} fill="none" stroke={C.cold} strokeWidth={4} />
       <polyline points={pts((x) => 0.75 * x * x)} fill="none" stroke={C.hot} strokeWidth={4} />
       <polyline points={pts((x) => 0.22 + 0.75 * x * x)} fill="none" stroke={C.accent} strokeWidth={4} strokeDasharray="10 7" />
-      <T x={X0 + W + 10} y={Y0 - 0.22 * H + 6} fontSize={18} fill={C.cold}>Pertes fer (constantes)</T>
+      <T x={X0 + W - 10} y={Y0 - 0.22 * H - 12} fontSize={18} fill={C.cold} textAnchor="end">Pertes fer (constantes)</T>
       <T x={X0 + W * 0.62} y={Y0 - 0.75 * 0.85 * H} fontSize={18} fill={C.hot} textAnchor="end">Pertes Joule ∝ I²</T>
       <T x={X0 + W - 10} y={Y0 - 0.97 * H} fontSize={18} fill={C.accent} textAnchor="end">Pertes totales</T>
       <T x={480} y={515} textAnchor="middle" fontSize={17} fill={C.ink2}>Allure qualitative, sans échelle numérique</T>
@@ -317,10 +328,10 @@ function Choix() {
       {node(280, 310, 220, ['ONAN'], C.ok)}
       {node(640, 310, 240, ['ONAN / ONAF'], C.ok)}
       {node(860, 310, 180, ['Eau ou', 'espace réduit ?'], C.accent)}
-      {edge(820, 345, 760, 420, 'non')}
-      {edge(900, 345, 900, 420, 'oui')}
-      {node(740, 450, 190, ['OFAF / ODAF'], C.ok)}
-      {node(900, 450, 150, ['OFWF', 'ODWF'], C.ok)}
+      {edge(820, 345, 730, 420, 'non')}
+      {edge(880, 345, 880, 420, 'oui')}
+      {node(715, 450, 180, ['OFAF / ODAF'], C.ok)}
+      {node(880, 450, 130, ['OFWF', 'ODWF'], C.ok)}
       <T x="40" y="440" fontSize={15} fill={C.ink3}>Arbre qualitatif : le choix final résulte</T>
       <T x="40" y="462" fontSize={15} fill={C.ink3}>d’une étude technico-économique</T>
       <T x="40" y="484" fontSize={15} fill={C.ink3}>(pertes, bruit, encombrement, disponibilité).</T>

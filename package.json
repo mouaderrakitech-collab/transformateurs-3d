@@ -18,7 +18,10 @@
     "test:perf": "node scripts/perf.mjs",
     "runpod": "node cloud/runpod.mjs",
     "cloud:modal": "cloud\\.venv\\Scripts\\modal run cloud/modal_app.py",
-    "cloud:modal:setup": "python -m venv cloud/.venv && cloud\\.venv\\Scripts\\python -m pip install modal && cloud\\.venv\\Scripts\\modal token new"
+    "cloud:modal:setup": "python -m venv cloud/.venv && cloud\\.venv\\Scripts\\python -m pip install modal && cloud\\.venv\\Scripts\\modal token new",
+    "pdf:captures": "node print/capture.mjs",
+    "pdf": "node print/make-pdf.mjs",
+    "pdf:preview": "node print/preview-pdf.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

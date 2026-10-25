@@ -15,6 +15,12 @@ Diapositives, modèles 3D et démonstrations sont réunis dans une seule interfa
 | Session GPU Cloud (Modal, crédits gratuits ; **carte bancaire exigée par Modal pour les GPU**) | `npm run cloud:modal:setup` puis `npm run cloud:modal` (voir [docs/CLOUD-GRATUIT.md](docs/CLOUD-GRATUIT.md)) |
 | Session GPU RunPod (payant) | `node cloud/runpod.mjs estimate`, puis `start`, puis `stop` (voir [docs/RUNPOD.md](docs/RUNPOD.md)) |
 
+## Présentation PDF autonome
+
+[livrables/PDF/Presentation_Transformateurs_Electriques_33_Diapositives.pdf](livrables/PDF/Presentation_Transformateurs_Electriques_33_Diapositives.pdf) : 33 diapositives 16:9, rendus 3D haute résolution annotés, schémas et tableaux. Le document est indépendant du site : il fonctionne sans Internet, s’imprime et s’envoie par e-mail.
+
+Régénération : `npm run build`, puis `npm run preview`, puis `npm run pdf:captures`, puis `npm run pdf` (contrôles intégrés : 33 pages, aucun débordement, repères présents).
+
 ## Contenu
 
 - **33 diapositives** en 7 parties (introduction, construction, types, échauffement, refroidissements, comparaison, conclusion), avec étapes de démonstration qui pilotent la 3D, schémas SVG, tableaux comparatifs et références.

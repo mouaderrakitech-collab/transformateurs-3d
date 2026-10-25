@@ -1,0 +1,250 @@
+{
+  "_doc": "Illustrations 3D du document PDF : rendus du moteur (qualité haute, sans interface). Clé = identifiant d'image.",
+  "cover": {
+    "model": "puissance",
+    "cooling": "ONAF",
+    "mode": "exterieur",
+    "view": "iso",
+    "zoom": 1.3
+  },
+  "def-dist": {
+    "model": "distribution",
+    "cooling": "ONAN",
+    "mode": "interieur",
+    "view": "iso",
+    "labels": true,
+    "zoom": 1.18
+  },
+  "core-exploded": {
+    "model": "puissance",
+    "cooling": "ONAN",
+    "mode": "eclate",
+    "view": "iso",
+    "labels": true,
+    "zoom": 1.12
+  },
+  "windings-section": {
+    "model": "puissance",
+    "cooling": "ONAN",
+    "mode": "coupe",
+    "view": "avant",
+    "zoom": 1.3
+  },
+  "power-section-iso": {
+    "model": "puissance",
+    "cooling": "ONAN",
+    "mode": "coupe",
+    "view": "iso",
+    "zoom": 1.3
+  },
+  "dry-section": {
+    "model": "sec",
+    "cooling": "AN",
+    "mode": "coupe",
+    "view": "iso",
+    "zoom": 1.1
+  },
+  "power-accessories": {
+    "model": "puissance",
+    "cooling": "ONAN",
+    "mode": "exterieur",
+    "view": "iso",
+    "labels": true,
+    "zoom": 1.18
+  },
+  "mono-ext": {
+    "model": "monophase",
+    "cooling": "ONAN",
+    "mode": "exterieur",
+    "view": "iso",
+    "zoom": 1.1
+  },
+  "mono-int": {
+    "model": "monophase",
+    "cooling": "ONAN",
+    "mode": "interieur",
+    "view": "avant",
+    "labels": true,
+    "zoom": 1.1
+  },
+  "dist-exploded": {
+    "model": "distribution",
+    "cooling": "ONAN",
+    "mode": "eclate",
+    "view": "iso",
+    "labels": true,
+    "zoom": 1.12
+  },
+  "dry-ext": {
+    "model": "sec",
+    "cooling": "AN",
+    "mode": "exterieur",
+    "view": "iso",
+    "labels": true,
+    "zoom": 1.1
+  },
+  "dry-exploded": {
+    "model": "sec",
+    "cooling": "AN",
+    "mode": "eclate",
+    "view": "iso",
+    "zoom": 1.1
+  },
+  "dist-section-flow": {
+    "model": "distribution",
+    "cooling": "ONAN",
+    "mode": "coupe",
+    "view": "iso",
+    "play": true,
+    "zoom": 1.3
+  },
+  "dist-ext": {
+    "model": "distribution",
+    "cooling": "ONAN",
+    "mode": "exterieur",
+    "view": "iso",
+    "labels": true,
+    "zoom": 1.18
+  },
+  "power-onaf-ext": {
+    "model": "puissance",
+    "cooling": "ONAF",
+    "mode": "exterieur",
+    "view": "iso",
+    "zoom": 1.3
+  },
+  "power-exploded": {
+    "model": "puissance",
+    "cooling": "ONAF",
+    "mode": "eclate",
+    "view": "iso",
+    "zoom": 1.12
+  },
+  "heat-front": {
+    "model": "puissance",
+    "cooling": "ONAN",
+    "mode": "refroidissement",
+    "view": "avant",
+    "play": true,
+    "zoom": 1.3
+  },
+  "an-front": {
+    "model": "sec",
+    "cooling": "AN",
+    "mode": "refroidissement",
+    "view": "avant",
+    "play": true,
+    "zoom": 1.1
+  },
+  "af-iso": {
+    "model": "sec",
+    "cooling": "AF",
+    "mode": "refroidissement",
+    "view": "iso",
+    "play": true,
+    "zoom": 1.1
+  },
+  "onan-side": {
+    "model": "puissance",
+    "cooling": "ONAN",
+    "mode": "refroidissement",
+    "view": "iso",
+    "play": true,
+    "zoom": 1.3
+  },
+  "onan-section": {
+    "model": "puissance",
+    "cooling": "ONAN",
+    "mode": "coupe",
+    "view": "avant",
+    "play": true,
+    "zoom": 1.3
+  },
+  "onaf-iso": {
+    "model": "puissance",
+    "cooling": "ONAF",
+    "mode": "refroidissement",
+    "view": "iso",
+    "play": true,
+    "zoom": 1.3
+  },
+  "onaf-side": {
+    "model": "puissance",
+    "cooling": "ONAF",
+    "mode": "refroidissement",
+    "view": "avant",
+    "play": true,
+    "zoom": 1.3
+  },
+  "ofaf-iso": {
+    "model": "puissance",
+    "cooling": "OFAF",
+    "mode": "refroidissement",
+    "view": "iso",
+    "play": true,
+    "zoom": 1.3
+  },
+  "ofaf-section": {
+    "model": "puissance",
+    "cooling": "OFAF",
+    "mode": "coupe",
+    "view": "avant",
+    "play": true,
+    "zoom": 1.3
+  },
+  "ofwf-iso": {
+    "model": "puissance",
+    "cooling": "OFWF",
+    "mode": "refroidissement",
+    "view": "iso",
+    "play": true,
+    "zoom": 1.3
+  },
+  "ofwf-side": {
+    "model": "puissance",
+    "cooling": "OFWF",
+    "mode": "refroidissement",
+    "view": "avant",
+    "play": true,
+    "zoom": 1.3
+  },
+  "odaf-section": {
+    "model": "puissance",
+    "cooling": "ODAF",
+    "mode": "coupe",
+    "view": "avant",
+    "play": true,
+    "zoom": 1.3
+  },
+  "odaf-iso": {
+    "model": "puissance",
+    "cooling": "ODAF",
+    "mode": "refroidissement",
+    "view": "iso",
+    "play": true,
+    "zoom": 1.3
+  },
+  "odwf-iso": {
+    "model": "puissance",
+    "cooling": "ODWF",
+    "mode": "refroidissement",
+    "view": "iso",
+    "play": true,
+    "zoom": 1.3
+  },
+  "odwf-section": {
+    "model": "puissance",
+    "cooling": "ODWF",
+    "mode": "coupe",
+    "view": "avant",
+    "play": true,
+    "zoom": 1.3
+  },
+  "closing": {
+    "model": "puissance",
+    "cooling": "OFAF",
+    "mode": "exterieur",
+    "view": "iso",
+    "zoom": 1.3
+  }
+}

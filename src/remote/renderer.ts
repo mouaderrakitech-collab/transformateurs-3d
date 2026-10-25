@@ -161,7 +161,7 @@ function pick(x: number, y: number): string | null {
   return null
 }
 
-function projectLabels() {
+export function projectLabels() {
   const r = r3f()
   if (!r || !useApp.getState().labels) return []
   const v = new THREE.Vector3()
