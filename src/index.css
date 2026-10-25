@@ -47,6 +47,8 @@ button:disabled {
   outline-offset: 2px;
 }
 
+/* Dans la couche « components » : les utilitaires Tailwind (hidden, md:…) restent prioritaires. */
+@layer components {
 .btn {
   display: inline-flex;
   align-items: center;
@@ -79,6 +81,8 @@ button:disabled {
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--color-accent-2);
+}
+
 }
 
 .part-label {

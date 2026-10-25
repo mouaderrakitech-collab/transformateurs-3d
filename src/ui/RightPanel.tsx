@@ -17,7 +17,7 @@ export function RightPanel() {
     if (selected) setTab('composant')
   }, [selected])
   return (
-    <aside className="flex h-full w-[23rem] shrink-0 flex-col border-l border-line bg-panel">
+    <aside className="flex h-full w-[23rem] max-w-full shrink-0 flex-col border-l border-line bg-panel">
       <div className="grid grid-cols-3 border-b border-line text-xs">
         {(['explications', 'composant', 'reglages'] as Tab[]).map((t) => (
           <button

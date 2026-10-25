@@ -2,6 +2,7 @@ import { allSlides, useApp } from '../store'
 import { PARTS_TITLES } from '../data/slides'
 import { useCloud } from '../remote/cloud'
 import { useTelemetry, isSoftwareRenderer } from '../telemetry'
+import { useCompact, useDrawer } from './layout'
 
 export function toggleFullscreen() {
   const s = useApp.getState()
@@ -24,14 +25,19 @@ export function BottomBar() {
   const slide = slides[idx]
   const nSteps = slide.steps?.length ?? 0
   const viewer = useCloud((c) => c.role === 'viewer')
+  const compact = useCompact()
+  const drawer = useDrawer()
 
   return (
-    <footer className="flex h-14 shrink-0 items-center gap-3 border-t border-line bg-panel px-3" data-testid="bottombar">
+    <footer className="flex h-14 shrink-0 items-center gap-2 border-t border-line bg-panel px-2 md:gap-3 md:px-3" data-testid="bottombar">
+      {compact && !presenting && (
+        <button className={`btn h-9 ${drawer.open === 'left' ? 'on' : ''}`} onClick={() => drawer.set(drawer.open === 'left' ? null : 'left')} aria-label="Sommaire" data-testid="open-toc">☰</button>
+      )}
       <button className="btn h-9 w-10 text-lg" onClick={s.prev} disabled={viewer || (idx === 0 && step === 0)} aria-label="Précédent">‹</button>
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2 text-[13px]">
-          <span className="font-mono text-ink" data-testid="slide-number">{idx + 1} / {slides.length}</span>
-          <span className="truncate text-ink-3">{PARTS_TITLES[slide.part]}</span>
+          <span className="shrink-0 whitespace-nowrap font-mono text-ink" data-testid="slide-number">{idx + 1} / {slides.length}</span>
+          <span className="hidden truncate text-ink-3 md:inline">{PARTS_TITLES[slide.part]}</span>
           <span className="truncate font-medium text-ink-2">— {slide.title}</span>
           {nSteps > 0 && (
             <span className="ml-1 flex gap-1" aria-label={`Étape ${step} sur ${nSteps}`}>
@@ -56,11 +62,14 @@ export function BottomBar() {
       </div>
       <button className="btn h-9 w-10 text-lg" onClick={s.next} disabled={viewer || (idx === slides.length - 1 && step >= nSteps)} aria-label="Suivant">›</button>
       <RenderChip />
-      <button className={`btn h-9 ${presenting ? 'on' : ''}`} onClick={() => s.setPresenting(!presenting)} title="Mode présentation (P)">
+      {compact && !presenting && (
+        <button className={`btn h-9 ${drawer.open === 'right' ? 'on' : ''}`} onClick={() => drawer.set(drawer.open === 'right' ? null : 'right')} aria-label="Explications et réglages" data-testid="open-info">ⓘ</button>
+      )}
+      <button className={`btn hidden h-9 sm:inline-flex ${presenting ? 'on' : ''}`} onClick={() => s.setPresenting(!presenting)} title="Mode présentation (P)">
         Présentation
       </button>
       <button className="btn h-9" onClick={toggleFullscreen} title="Plein écran (F)">⛶</button>
-      <button className="btn h-9" onClick={() => s.setShowHelp(true)} title="Aide (?)">?</button>
+      <button className="btn hidden h-9 sm:inline-flex" onClick={() => s.setShowHelp(true)} title="Aide (?)">?</button>
     </footer>
   )
 }

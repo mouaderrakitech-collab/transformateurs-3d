@@ -9,7 +9,7 @@ type Tab = 'sommaire' | 'types' | 'refroidissement'
 export function Sidebar() {
   const [tab, setTab] = useState<Tab>('sommaire')
   return (
-    <aside className="flex h-full w-72 shrink-0 flex-col border-r border-line bg-panel">
+    <aside className="flex h-full w-72 max-w-full shrink-0 flex-col border-r border-line bg-panel">
       <div className="flex items-center gap-2 border-b border-line px-4 py-3">
         <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden>
           <rect x="7" y="7" width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="3" />

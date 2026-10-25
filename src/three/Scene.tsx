@@ -53,16 +53,19 @@ function CameraRig() {
   const view = useApp((s) => s.view)
   const nonce = useApp((s) => s.viewNonce)
   const exploded = useApp((s) => s.mode === 'eclate')
+  // Écran en portrait (mobile) : le champ horizontal est étroit, reculer la caméra en conséquence
+  const aspect = useThree((s) => s.size.width / Math.max(1, s.size.height))
+  const portrait = aspect < 1 ? Math.min(2.2, 1 / aspect) : 1
   const first = useRef(true)
   useEffect(() => {
     const def = MODELS[model].view
     // vue éclatée : recul et cible plus haute (les composants s'élèvent)
-    const d = new THREE.Vector3(...VIEW_DIRS[view]).normalize().multiplyScalar(def.radius * (exploded ? 2.9 : 2.4))
+    const d = new THREE.Vector3(...VIEW_DIRS[view]).normalize().multiplyScalar(def.radius * (exploded ? 2.9 : 2.4) * portrait)
     const [tx, ty0, tz] = def.target
     const ty = ty0 + (exploded ? def.radius * 0.3 : 0)
     ref.current?.setLookAt(tx + d.x, ty + d.y, tz + d.z, tx, ty, tz, !first.current)
     first.current = false
-  }, [model, view, nonce, exploded])
+  }, [model, view, nonce, exploded, portrait])
   // API utilisée par le serveur de rendu distant (commandes caméra reçues du navigateur)
   useEffect(() => {
     const w = window as unknown as { __camera?: CameraControls }

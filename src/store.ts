@@ -165,6 +165,7 @@ export const useApp = create<AppState>((set, get) => ({
   toggleLayer: (l) => set((s) => ({ layers: { ...s.layers, [l]: !s.layers[l] } })),
   setSectionOffset: (sectionOffset) => set({ sectionOffset }),
   setQuality: (quality) => {
+    markQualityManual()
     set({ quality })
     try { localStorage.setItem('tr3d-quality', quality) } catch { /* stockage indisponible */ }
   },
@@ -220,7 +221,15 @@ export const useApp = create<AppState>((set, get) => ({
 }))
 
 // Qualité mémorisée entre deux sessions (confort uniquement).
+/** Vrai tant que l'utilisateur n'a pas choisi de qualité : l'ajustement automatique reste permis. */
+export let qualityAuto = true
 try {
   const q = localStorage.getItem('tr3d-quality') as Quality | null
-  if (q === 'performance' || q === 'equilibre' || q === 'haute') useApp.setState({ quality: q })
+  if (q === 'performance' || q === 'equilibre' || q === 'haute') {
+    useApp.setState({ quality: q })
+    qualityAuto = false
+  } else if (window.matchMedia('(max-width: 1099px), (pointer: coarse)').matches) {
+    useApp.setState({ quality: 'performance' }) // mobile / tablette
+  }
 } catch { /* ignore */ }
+export const markQualityManual = () => { qualityAuto = false }

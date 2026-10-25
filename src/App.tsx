@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { useApp } from './store'
+import { qualityAuto, useApp } from './store'
+import { useTelemetry } from './telemetry'
 import { Sidebar } from './ui/Sidebar'
 import { RightPanel } from './ui/RightPanel'
 import { Stage } from './ui/Stage'
@@ -7,12 +8,19 @@ import { BottomBar, toggleFullscreen } from './ui/BottomBar'
 import { cloud, readSessionLink, useCloud } from './remote/cloud'
 import type { ViewMode } from './types'
 import { useMedia, webglAvailable } from './ui/MediaView'
+import { useCompact, useDrawer } from './ui/layout'
 
 const MODE_KEYS: Record<string, ViewMode> = { '1': 'exterieur', '2': 'interieur', '3': 'eclate', '4': 'coupe', '5': 'refroidissement' }
 
 export function App() {
   const presenting = useApp((s) => s.presenting)
   const showHelp = useApp((s) => s.showHelp)
+  const compact = useCompact()
+  const drawer = useDrawer((s) => s.open)
+  const setDrawer = useDrawer((s) => s.set)
+  // Sur mobile, fermer le tiroir quand on change de diapositive
+  const slideIndex = useApp((s) => s.slideIndex)
+  useEffect(() => setDrawer(null), [slideIndex, setDrawer])
 
   // Première diapositive, puis éventuel lien de session cloud.
   useEffect(() => {
@@ -28,6 +36,22 @@ export function App() {
         })
         .catch(() => undefined)
     }
+  }, [])
+
+  // Mode local optimisé : si le GPU du PC reste sous 20 i/s, passer en qualité « Performance ».
+  useEffect(() => {
+    let low = 0
+    const id = setInterval(() => {
+      const { fps } = useTelemetry.getState()
+      const s = useApp.getState()
+      if (!qualityAuto || useCloud.getState().status !== 'off' || s.quality === 'performance' || fps === 0) return
+      low = fps < 20 ? low + 1 : 0
+      if (low >= 6) {
+        useApp.setState({ quality: s.quality === 'haute' ? 'equilibre' : 'performance' })
+        low = 0
+      }
+    }, 1000)
+    return () => clearInterval(id)
   }, [])
 
   // Navigation clavier (télécommande de présentation : PageUp / PageDown)
@@ -92,10 +116,17 @@ export function App() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex min-h-0 flex-1">
-        {!presenting && <Sidebar />}
+      <div className="relative flex min-h-0 flex-1">
+        {!presenting && !compact && <Sidebar />}
         <Stage />
-        {!presenting && <RightPanel />}
+        {!presenting && !compact && <RightPanel />}
+        {compact && drawer && (
+          <div className="absolute inset-0 z-40 flex bg-black/50" onClick={() => setDrawer(null)}>
+            <div className={`h-full max-w-[88vw] ${drawer === 'right' ? 'ml-auto' : ''}`} onClick={(e) => e.stopPropagation()} data-testid="drawer">
+              {drawer === 'left' ? <Sidebar /> : <RightPanel />}
+            </div>
+          </div>
+        )}
       </div>
       <BottomBar />
       {showHelp && <Help />}

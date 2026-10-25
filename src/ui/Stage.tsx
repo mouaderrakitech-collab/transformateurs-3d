@@ -62,7 +62,7 @@ export function Stage() {
       )}
 
       {!sceneVisible && (
-        <div key={slide.id} className="slide-enter absolute inset-0 flex flex-col bg-bg p-6">
+        <div key={slide.id} className="slide-enter absolute inset-0 flex flex-col bg-bg p-3 md:p-6">
           <div className="mb-3 flex items-start justify-between gap-4">
             <h2 className={`${presenting ? 'text-4xl' : 'text-2xl'} font-semibold`}>{slide.title}</h2>
             {slide.layout !== 'image' && (
@@ -115,9 +115,9 @@ function SlideBullets() {
 
 function TitleOverlay({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-bg via-bg/80 to-transparent px-10 pb-8 pt-28">
-      <h1 className="text-5xl font-bold tracking-tight drop-shadow-lg">{title}</h1>
-      {subtitle && <p className="mt-2 text-2xl text-ink-2 drop-shadow">{subtitle}</p>}
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-bg via-bg/80 to-transparent px-5 pb-6 pt-24 md:px-10 md:pb-8 md:pt-28">
+      <h1 className="text-3xl font-bold tracking-tight drop-shadow-lg md:text-5xl">{title}</h1>
+      {subtitle && <p className="mt-2 text-lg text-ink-2 drop-shadow md:text-2xl">{subtitle}</p>}
     </div>
   )
 }
@@ -131,15 +131,15 @@ function ViewToolbar() {
   const viewer = useCloud((s) => s.role === 'viewer')
   if (viewer) return null
   return (
-    <div className="absolute left-3 right-3 top-3 z-10 flex flex-wrap items-center gap-2">
-      <div className="flex rounded-lg border border-line bg-panel/90 p-1 backdrop-blur" role="group" aria-label="Mode d'affichage">
+    <div className="absolute left-3 right-3 top-3 z-10 flex items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
+      <div className="flex shrink-0 rounded-lg border border-line bg-panel/90 p-1 backdrop-blur" role="group" aria-label="Mode d'affichage">
         {MODES.map((m) => (
           <button key={m.id} className={`btn border-0 ${mode === m.id ? 'on' : 'bg-transparent'}`} onClick={() => setMode(m.id)} title={`${m.label} (touche ${m.key})`}>
             {m.label}
           </button>
         ))}
       </div>
-      <div className="flex rounded-lg border border-line bg-panel/90 p-1 backdrop-blur" role="group" aria-label="Vue caméra">
+      <div className="flex shrink-0 rounded-lg border border-line bg-panel/90 p-1 backdrop-blur" role="group" aria-label="Vue caméra">
         {VIEWS.map((v) => (
           <button key={v.id} className={`btn border-0 px-2 ${view === v.id ? 'on' : 'bg-transparent'}`} onClick={() => setView(v.id)}>
             {v.label}
@@ -158,7 +158,7 @@ function ExportGlb() {
   const [busy, setBusy] = useState(false)
   return (
     <button
-      className="btn ml-auto bg-panel/90"
+      className="btn ml-auto hidden shrink-0 bg-panel/90 md:inline-flex"
       disabled={busy}
       title="Exporter le modèle 3D affiché (GLB)"
       onClick={async () => {
@@ -202,7 +202,7 @@ function CoolingHud() {
     { k: 'Eau', shape: 'rotate-45', show: usesWater(cooling) },
   ]
   return (
-    <div className="absolute bottom-3 right-3 z-10 w-[22rem] rounded-xl border border-line bg-panel/90 p-3 text-[13px] backdrop-blur" data-testid="cooling-hud">
+    <div className="absolute bottom-3 right-3 z-10 w-[22rem] max-w-[calc(100%-1.5rem)] rounded-xl border border-line bg-panel/90 p-3 text-[13px] backdrop-blur" data-testid="cooling-hud">
       <div className="mb-2 flex items-center justify-between">
         <span>
           <b className="font-mono text-base text-accent">{cooling}</b>
