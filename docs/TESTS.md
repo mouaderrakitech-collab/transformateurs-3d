@@ -122,9 +122,21 @@ Bascule automatique vers les images JPEG par WebSocket, puis toutes les commande
 | Contrôle anti-fuite dans le workflow de publication | ✅ en place (bloque la publication) |
 | Jetons invalides, rôle imposé par le serveur, origine du lanceur | ✅ (sections 3 et 4) |
 
-## 7. GitHub Pages
+## 7. GitHub Pages et mobile
 
-| Test | Résultat |
+Dépôt public : https://github.com/mouaderrakitech-collab/transformateurs-3d. Site : https://mouaderrakitech-collab.github.io/transformateurs-3d/
+
+| Test ( sur l'URL publique HTTPS, Chrome) | Résultat |
 |---|---|
-| Workflow de construction et de publication | prêt, ⏳ non exécuté (push non autorisé) |
-| URL publique | ⏳ |
+| Workflow GitHub Actions (construction, contrôle anti-fuite, publication) | ✅ |
+| Page d'accueil HTTPS | ✅ HTTP 200, HTTPS imposé |
+| JavaScript et CSS chargés | ✅ |
+| Rendu 3D (modèles, matériaux, éclairage) | ✅ |
+| 33 diapositives parcourues | ✅ |
+| Animation de refroidissement | ✅ |
+| Médias de secours (50 images, 10 vidéos) accessibles | ✅ |
+| Paquet du moteur distant  accessible | ✅ |
+| Aucune ressource en erreur, aucune erreur JavaScript (PC) | ✅ après correction (recherche du lanceur USB limitée à 127.0.0.1) |
+| Mobile (profil Pixel 7, tactile) : rendu 3D, pas de défilement horizontal, boutons tactiles, sommaire et explications en tiroirs | ✅ |
+
+Mobile testé par émulation Chrome (profil Pixel 7), pas sur un téléphone physique.

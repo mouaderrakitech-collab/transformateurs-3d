@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { cloud, useCloud } from './cloud'
+import { cloud, isLocalLauncher, useCloud } from './cloud'
 import { PROFILES, type StreamProfile } from './protocol'
 import { useTelemetry, isSoftwareRenderer } from '../telemetry'
 
@@ -17,6 +17,7 @@ export function CloudPanel() {
 
   // Lanceur USB : un serveur local peut proposer le démarrage d'une session (clé saisie à l'exécution).
   useEffect(() => {
+    if (!isLocalLauncher()) return
     fetch('./api/launcher', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => setLauncher(j?.available ? j : null))

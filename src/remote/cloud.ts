@@ -357,6 +357,9 @@ class CloudClient {
 
 export const cloud = new CloudClient()
 
+/** Le lanceur USB (API locale) n’existe que sur 127.0.0.1 / localhost, jamais sur le site public. */
+export const isLocalLauncher = () => /^(127\.0\.0\.1|localhost)$/.test(location.hostname) && location.protocol === 'http:'
+
 /**
  * Lien de session : #cloud=<url>&token=<jeton>. Le fragment n'est jamais envoyé au serveur web
  * (GitHub Pages) ; il est effacé de la barre d'adresse après lecture.

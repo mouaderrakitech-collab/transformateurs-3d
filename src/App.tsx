@@ -9,6 +9,7 @@ import { cloud, readSessionLink, useCloud } from './remote/cloud'
 import type { ViewMode } from './types'
 import { useMedia, webglAvailable } from './ui/MediaView'
 import { useCompact, useDrawer } from './ui/layout'
+import { isLocalLauncher } from './remote/cloud'
 
 const MODE_KEYS: Record<string, ViewMode> = { '1': 'exterieur', '2': 'interieur', '3': 'eclate', '4': 'coupe', '5': 'refroidissement' }
 
@@ -29,7 +30,7 @@ export function App() {
     if (!readSessionLink()) {
       cloud.resume()
       // Lanceur USB : si une session GPU est active, s'y connecter automatiquement (rendu distant prioritaire)
-      fetch('./api/launcher', { cache: 'no-store' })
+      if (isLocalLauncher()) fetch('./api/launcher', { cache: 'no-store' })
         .then((r) => (r.ok ? r.json() : null))
         .then((j) => {
           if (j?.session?.serverUrl && j.session.presenterToken && useCloud.getState().status === 'off') cloud.connect(j.session.serverUrl, j.session.presenterToken)
